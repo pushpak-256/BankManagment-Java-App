@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.bank.manage.Enums.AccountType;
+import com.bank.manage.Enums.TransactionType;
 import com.bank.manage.dboperations.DbConnector;
 import com.bank.manage.entites.Account;
 import com.bank.manage.entites.AccountOps;
@@ -21,7 +22,7 @@ public class AccountOperations implements AccountOps {
 	Scanner sc = new Scanner(System.in);
 	Connection con = DbConnector.createMyConnection();
 	CustomerOperations cops = new CustomerOperations();
-	
+	TransactionOperations t = new TransactionOperations();
 
 	/*
 	 * checks kYC Status with custID Does not allow creation of account if KYC is
@@ -56,7 +57,7 @@ public class AccountOperations implements AccountOps {
 					cops.updateCustomerTable(c);
 					AccountOperations aops = new AccountOperations();
 					aops.updateAccountsTable(c);
-					
+
 				} else {
 					System.out.println("System Down");
 				}
@@ -74,7 +75,6 @@ public class AccountOperations implements AccountOps {
 	 */
 	@Override
 	public void deposit(Customer c, double amount) {
-
 		try {
 			ResultSet i = cops.getUserById(c.getId());
 			int kycstatus = i.getInt(6);
@@ -94,6 +94,15 @@ public class AccountOperations implements AccountOps {
 					System.out.println("Deposited amount : " + amount + " and Available Balance is : " + finalamt);
 					AccountOperations aops = new AccountOperations();
 					aops.updateBalanceInAccount(finalamt, c);
+					ResultSet rs = getAccountById(c.getId());
+					if (rs != null) {
+						Account ac = new Account();
+						ac.setAccountNumber(rs.getString(1));
+						ac.setHolderName(rs.getString(2));
+						t.registerTransaction(ac, c, amount, TransactionType.Deposit);
+					} else {
+						System.out.println("Balance Updated but transaction entry failed");
+					}
 				} else {
 					try {
 						throw new NegativeBalanceException("Negative Balance");
@@ -105,7 +114,6 @@ public class AccountOperations implements AccountOps {
 		} catch (SQLException | ProcessTerminationException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/*
@@ -132,15 +140,12 @@ public class AccountOperations implements AccountOps {
 					s.next();
 					double bal = s.getDouble(1);
 					String type = s.getString(2);
-					System.out.println(bal);
-					System.out.println(type);
 					if (bal > 0) {
 						if (type.equals("SAVINGS")) {
 							if (bal < 1000) {
 								throw new LowBalanceException("Minimum Balance Should be 1000");
 							} else {
 								double balafterwithdrawal = bal - amount;
-								System.out.println(balafterwithdrawal);
 								if (balafterwithdrawal < 1000) {
 									throw new LowBalanceException("Minimum Balance Should be 1000");
 								} else {
@@ -148,6 +153,15 @@ public class AccountOperations implements AccountOps {
 									aops.updateBalanceInAccount(balafterwithdrawal, c);
 									System.out.println("WithDrawn amount : " + amount + " and Available Balance is : "
 											+ balafterwithdrawal);
+									ResultSet rs = getAccountById(c.getId());
+									if (rs != null) {
+										Account ac = new Account();
+										ac.setAccountNumber(rs.getString(1));
+										ac.setHolderName(rs.getString(2));
+										t.registerTransaction(ac, c, amount, TransactionType.Withdrawn);
+									} else {
+										System.out.println("Balance Updated but transaction entry failed");
+									}
 								}
 							}
 						} else {
@@ -155,7 +169,7 @@ public class AccountOperations implements AccountOps {
 								if (bal < 5000) {
 									throw new LowBalanceException("Minimum Balance Should be 5000");
 								} else {
-									double balafterwithdrawal = c.getAccount().getBalance() - amount;
+									double balafterwithdrawal = bal - amount;
 									if (balafterwithdrawal < 5000) {
 										throw new LowBalanceException("Minimum Balance Should be 5000");
 									} else {
@@ -163,6 +177,16 @@ public class AccountOperations implements AccountOps {
 										aops.updateBalanceInAccount(balafterwithdrawal, c);
 										System.out.println("WithDrawn amount : " + amount
 												+ " and Available Balance is : " + balafterwithdrawal);
+										ResultSet rs = getAccountById(c.getId());
+
+										if (rs != null) {
+											Account ac = new Account();
+											ac.setAccountNumber(rs.getString(1));
+											ac.setHolderName(rs.getString(2));
+											t.registerTransaction(ac, c, amount, TransactionType.Withdrawn);
+										} else {
+											System.out.println("Balance Updated but transaction entry failed");
+										}
 									}
 								}
 							}
@@ -230,8 +254,8 @@ public class AccountOperations implements AccountOps {
 		String query = "Select * from accounts where customerId = ?";
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
-			stmt.setString(1,c.getId());
-			ResultSet set =  stmt.executeQuery();
+			stmt.setString(1, c.getId());
+			ResultSet set = stmt.executeQuery();
 			set.next();
 			double bal = set.getDouble(7);
 			if (bal > 0) {
@@ -240,8 +264,8 @@ public class AccountOperations implements AccountOps {
 			} else {
 				String deletequery = "Delete from accounts where customerId = ?";
 				PreparedStatement pstmt = con.prepareStatement(deletequery);
-				pstmt.setString(1,c.getId());
-				int result =  pstmt.executeUpdate();
+				pstmt.setString(1, c.getId());
+				int result = pstmt.executeUpdate();
 				if (result > 0) {
 					System.out.println("Account Deleted");
 				} else {
@@ -249,18 +273,19 @@ public class AccountOperations implements AccountOps {
 				}
 			}
 		} catch (SQLException | ProcessTerminationException e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	// update user KYc
-	public void updateUserKYC(String id) throws SQLException {
+	public void updateUserKYC(String id) throws SQLException, ClassNotFoundException {
 		ResultSet s = cops.getUserById(id);
 		try {
-			if (s != null && s.next()) {
-				String query = "Update customer set kycVerificationStatus = ? where id = ?";
+			if (s != null) {
+				String query = "update customers set kycVerificationStatus =? where id = ?";
+				con = DbConnector.createMyConnection();
 				PreparedStatement pstmt = con.prepareStatement(query);
 				pstmt.setInt(1, 1);
 				pstmt.setString(2, id);
@@ -278,8 +303,9 @@ public class AccountOperations implements AccountOps {
 			e.printStackTrace();
 		}
 	}
-    
-	//Insert Record into Account Table
+	
+
+	// Insert Record into Account Table
 	public void updateAccountsTable(Customer c) {
 		System.out.println("Came inside");
 		String query = "insert into accounts values(?,?,?,?,?,?,?,?)";
@@ -294,44 +320,62 @@ public class AccountOperations implements AccountOps {
 			pstmt.setString(6, c.getAccount().getIfsc_code());
 			pstmt.setDouble(7, c.getAccount().getBalance());
 			pstmt.setString(8, c.getId());
-			
+
 			int recordaffected = pstmt.executeUpdate();
-			
+
 			System.out.println(recordaffected);
 			if (recordaffected > 0) {
 				System.out.println("Account Added");
 			} else {
 				System.out.println("Something Went Wrong");
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public void updateBalanceInAccount(double balance,Customer c) {
+
+	public void updateBalanceInAccount(double balance, Customer c) {
 		String query = "update accounts set balance = ? where customerId = ? ";
 		try {
 			Connection con2 = DbConnector.createMyConnection();
 			PreparedStatement pstmt = con2.prepareStatement(query);
-			pstmt.setDouble(1,  balance);
+			pstmt.setDouble(1, balance);
 			pstmt.setString(2, c.getId());
-			
-			
+
 			int recordaffected = pstmt.executeUpdate();
-			
+
 			System.out.println(recordaffected);
 			if (recordaffected > 0) {
 				System.out.println("Balance Updated");
 			} else {
 				System.out.println("Something Went Wrong");
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public ResultSet getAccountById(String id) throws SQLException {
+		String query = "select * from accounts where customerId = ?";
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setString(1, id);
+			ResultSet res = pstmt.executeQuery();
+			if (res.next()) {
+				System.out.println("Account Found");
+				return res;
+			} else {
+				System.out.println("Account Not Found");
+				return null;
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return null;
 		}
 	}
 
