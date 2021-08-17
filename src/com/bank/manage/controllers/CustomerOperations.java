@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.bank.manage.dboperations.DbConnector;
 import com.bank.manage.entites.Address;
 import com.bank.manage.entites.Customer;
+import com.bank.manage.exceptions.ProcessTerminationException;
 
 public class CustomerOperations {
 	Scanner sc = new Scanner(System.in);
@@ -84,25 +85,36 @@ public class CustomerOperations {
 	}
 
 	// Delete Customer from database by ID
-	public void deleteCustomer(Customer c) throws SQLException {
-		String query = "delete from customers where id = ?";
-		try {
-			PreparedStatement stmt = con.prepareStatement(query);
-			stmt.setString(1, c.getId());
-			int res = stmt.executeUpdate();
-			if (res <= 0) {
-				System.out.println("Something went Wrong");
-			} else {
-				System.out.println("Customer Deleted Succssfully");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			con.close();
-		}
+    public void deleteCustomer(Customer c) throws SQLException, ProcessTerminationException {
+        String query = " select * from accounts where customerId = ?";
+        con = DbConnector.createMyConnection();
+        PreparedStatement pstmt = con.prepareStatement(query);
+        pstmt.setString(1, c.getId());
+        ResultSet rs = pstmt.executeQuery();
+        if(rs.next()) {
+            throw new ProcessTerminationException("Cannot delete customer having active account");
+        }
+        else {
+            String delquery = "delete from customers where id = ?";
+            try {
+                PreparedStatement stmt = con.prepareStatement(delquery);
+                stmt.setString(1, c.getId());
+                int res = stmt.executeUpdate();
+                if (res <= 0) {
+                    System.out.println("Something went Wrong");
+                } else {
+                    System.out.println("Customer Deleted Succssfully");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            finally {
+                con.close();
+            }
+        }
 
-	}
+    }
+
 
 	// Check Customer KYC Status
 	public int checkCustomerKyc(Customer c) throws SQLException {
