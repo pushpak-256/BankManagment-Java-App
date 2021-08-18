@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,6 +17,7 @@ import com.bank.manage.entites.Customer;
 import com.bank.manage.exceptions.LowBalanceException;
 import com.bank.manage.exceptions.NegativeBalanceException;
 import com.bank.manage.exceptions.ProcessTerminationException;
+import com.mysql.cj.exceptions.RSAException;
 
 public class AccountOperations implements AccountOps {
 
@@ -31,47 +33,27 @@ public class AccountOperations implements AccountOps {
 	@Override
 	public void createAccount(Customer c) {
 		try {
+			int id = Integer.parseInt(c.getId()) ;
 			ResultSet resultset = cops.getUserById(c.getId());
 			
 			if (resultset != null) {
 				int kycstatus = resultset.getInt(6);
 				
 		//		System.out.println("@@@@@" + kycstatus); is it ok if rmove this line
-				
+		 		
+	           
+            PreparedStatement stmt =
+            		con.prepareStatement("select * from accounts where id=?");
+            stmt.setInt(1, id); 
+           ResultSet i = stmt.executeQuery();
+           System.out.println(i+" int is ");
+           
 				if (kycstatus != 0) {
-					
-					System.out.println("Select 1 for Opening Savings Account or 2 for Current Account");
-					int accountchoice = sc.nextInt();
-					
-					Account ac = new Account();
-					ac.setAccountNumber(Integer.toString(ThreadLocalRandom.current().nextInt()));
-					String name = resultset.getString(2);
-					ac.setHolderName(name);
-					ac.setBankName("SBI");
-					ac.setBranch_code("1025");
-					ac.setIfsc_code("SBIN0125");
-					
-					if (accountchoice == 1) {
-						ac.setAccountType(AccountType.SAVINGS);
-						ac.setBalance(1000);
-					} 
-					
-					else {
-						ac.setAccountType(AccountType.CURRENT);
-						ac.setBalance(5000.0);
-					}
-					
-					c.setAccount(ac);
-
-					
-			//removed this method 	//	cops.updateCustomerTable(c);
-					
-					//updating Accounts table
-					AccountOperations aops = new AccountOperations();
-			    	aops.updateAccountsTable(c);
-
+				//	ResultSet resultset1 = cops.getA(c.getId());
 				} 
-				else { System.out.println("Please update KYC status ");
+				else {
+					
+					System.out.println("Please update KYC status ");
 				}
 				
 			} 

@@ -151,6 +151,7 @@ PreparedStatement insertstatement = con.prepareStatement
 			pstmt = con.prepareStatement("select * from customers where id = ?");
 			pstmt.setString(1, c.getId());
 			ResultSet i = pstmt.executeQuery();
+			
 			if (i.next()) {
 				int kycstatus = i.getInt(6);
 				return kycstatus;
@@ -221,6 +222,22 @@ PreparedStatement insertstatement = con.prepareStatement
 			}
 	}
 	
+	//when we just need name form customers 
+	public void getUserNameById(String id) throws SQLException {
+		String query = "select name from customers where id = ?";
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setString(1, id);
+			ResultSet res = pstmt.executeQuery();
+			
+			if (res.next()) {
+				System.out.println("User Found");
+				System.out.println(res.getString(1));
+			} else {
+				System.out.println("User Not Found");
+					}
+		} 	catch (SQLException e) {e.printStackTrace();}}
 	
+
 	
 }

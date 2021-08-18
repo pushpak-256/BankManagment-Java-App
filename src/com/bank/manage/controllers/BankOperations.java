@@ -12,7 +12,7 @@ public class BankOperations {
 		AccountOperations aops = new AccountOperations();
 		
 		Customer c = new Customer();
-	    c.setId("10002");
+	    c.setId("10001");
 	
 	
 		//cops.removeCustomer(10004);
@@ -21,8 +21,9 @@ public class BankOperations {
 	    
 	    
 	  //  aops.updateUserKYC(c.getId());
-	aops.createAccount(c);
+	    aops.createAccount(c);
 	    
+	    //cops.getUserNameById(c.getId());
 	   // cops.getUserById(c.getId());
 	     //aops.checkBalance(c);
 	
