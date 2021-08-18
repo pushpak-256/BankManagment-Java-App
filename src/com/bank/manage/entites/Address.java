@@ -72,8 +72,10 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return "Address [RoomNumber=" + RoomNumber + ", AddressLine1=" + AddressLine1 + ", AddressLine2=" + AddressLine2
-				+ ", city=" + city + ", country=" + country + ", postalCOde=" + postalCOde + "]";
+		return   RoomNumber + ", " + AddressLine1 + ", " + AddressLine2
+				+ ", " + city + ", " + country + ", " + postalCOde ;
 	}
+	
+	
 
 }

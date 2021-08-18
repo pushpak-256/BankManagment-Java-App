@@ -29,30 +29,42 @@ public class CustomerOperations {
 			} else {
 				System.out.println("Enter Id");
 				String cid = sc.nextLine();
+				
 				System.out.println("Enter Name");
 				String name = sc.nextLine();
+				
 				System.out.println("Enter Email");
 				String email = sc.nextLine();
+				
 				System.out.println("Enter Phone");
 				String phone = sc.nextLine();
+				
 				System.out.println("Enter Room or Flat Number");
 				int rNUmber = sc.nextInt();
+				
 				System.out.println("Enter AddressLine 1");
 				sc.nextLine();
+				
 				String adressLine1 = sc.nextLine();
 				System.out.println("Enter AddressLine 2");
+				
 				String addressLine2 = sc.nextLine();
 				System.out.println("Enter City");
+				
 				String city = sc.nextLine();
 				System.out.println("Enter Country");
+				
 				String country = sc.nextLine();
 				System.out.println("Enter PinCode");
+				
 				int code = sc.nextInt();
 				System.out.println("Enter Addhar Number");
+				
 				sc.nextLine();
 				String adhar = sc.nextLine();
 				System.out.println("Enter Pan Number");
 				String pan = sc.nextLine();
+				
 				Address a = new Address(rNUmber, adressLine1, addressLine2, city, country, code);
 
 				PreparedStatement insertstatement = con
@@ -131,7 +143,6 @@ public class CustomerOperations {
 				return 0;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {

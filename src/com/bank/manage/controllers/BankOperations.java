@@ -12,8 +12,8 @@ public class BankOperations {
 		AccountOperations aopss = new AccountOperations();
 		
 		Customer c = new Customer();
-	    c.setId("311");
-	    //cops.registerCustomer(c);
+	   // c.setId("1");
+	    cops.registerCustomer(c);
 	    //aopss.updateUserKYC(c.getId());
 		//aopss.createAccount(c);
 	    
@@ -23,7 +23,7 @@ public class BankOperations {
 	    //aopss.deposit(c, 10000.0);
 	    //aopss.withdraw(c, 10000.0);
 		//aopss.closeAccount(c);
-		cops.deleteCustomer(c);
+		//cops.deleteCustomer(c);
 	}
 
 }
