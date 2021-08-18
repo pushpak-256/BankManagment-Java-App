@@ -190,17 +190,20 @@ PreparedStatement insertstatement = con.prepareStatement
 
 	}
 
-	public void updateCustomerTable(Customer c) throws SQLException {
-		PreparedStatement insertstatement = con.prepareStatement("update customers set account = ? where id = ? ");
-		insertstatement.setString(1, c.getAccount().toString());
-		insertstatement.setString(2, c.getId());
+// this method is not requeired anymore
+	
+//	public void updateCustomerTable(Customer c) throws SQLException {
+//		PreparedStatement insertstatement = con.prepareStatement("update customers set account = ? where id = ? ");
+//		insertstatement.setString(1, c.getAccount().toString());
+//		insertstatement.setString(2, c.getId());
+//
+//		int res = insertstatement.executeUpdate();
+//
+//		System.out.println(res + "Record Updated");
+//        con.close();
+//	}
 
-		int res = insertstatement.executeUpdate();
-
-		System.out.println(res + "Record Updated");
-        con.close();
-	}
-
+	
 	//removing a customer record with this.id form customers table
 	public void removeCustomer(int id) throws SQLException {
 		

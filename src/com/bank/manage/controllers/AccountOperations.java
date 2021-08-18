@@ -31,38 +31,53 @@ public class AccountOperations implements AccountOps {
 	@Override
 	public void createAccount(Customer c) {
 		try {
-			ResultSet i = cops.getUserById(c.getId());
-			if (i != null) {
-				int kycstatus = i.getInt(6);
-				System.out.println("@@@@@" + kycstatus);
+			ResultSet resultset = cops.getUserById(c.getId());
+			
+			if (resultset != null) {
+				int kycstatus = resultset.getInt(6);
+				
+		//		System.out.println("@@@@@" + kycstatus); is it ok if rmove this line
+				
 				if (kycstatus != 0) {
+					
 					System.out.println("Select 1 for Opening Savings Account or 2 for Current Account");
 					int accountchoice = sc.nextInt();
+					
 					Account ac = new Account();
 					ac.setAccountNumber(Integer.toString(ThreadLocalRandom.current().nextInt()));
-					String name = i.getString(2);
+					String name = resultset.getString(2);
 					ac.setHolderName(name);
 					ac.setBankName("SBI");
 					ac.setBranch_code("1025");
 					ac.setIfsc_code("SBIN0125");
+					
 					if (accountchoice == 1) {
 						ac.setAccountType(AccountType.SAVINGS);
 						ac.setBalance(1000);
-					} else {
+					} 
+					
+					else {
 						ac.setAccountType(AccountType.CURRENT);
 						ac.setBalance(5000.0);
 					}
+					
 					c.setAccount(ac);
 
-					cops.updateCustomerTable(c);
+					
+			//removed this method 	//	cops.updateCustomerTable(c);
+					
+					//updating Accounts table
 					AccountOperations aops = new AccountOperations();
-					aops.updateAccountsTable(c);
+			    	aops.updateAccountsTable(c);
 
-				} else {
-					System.out.println("System Down");
+				} 
+				else { System.out.println("Please update KYC status ");
 				}
-			} else {
-				System.out.println("User Not Found");
+				
+			} 
+			
+			else {	System.out.println("User Not Found");
+			
 			}
 
 		} catch (SQLException e) {
@@ -79,31 +94,48 @@ public class AccountOperations implements AccountOps {
 			ResultSet i = cops.getUserById(c.getId());
 			int kycstatus = i.getInt(6);
 			System.out.println(kycstatus);
-			if (kycstatus == 0) {
+			
+			 if (kycstatus == 0)
+			{
 				System.out.println("Kyc Not Updated");
 				throw new ProcessTerminationException("Process Terminated");
-			} else {
+			}
+			 
+			 else
+			{
 				String query = "select balance from accounts where customerId = ?";
 				PreparedStatement pst = con.prepareStatement(query);
 				pst.setString(1, c.getId());
 				ResultSet s = pst.executeQuery();
 				s.next();
+				
 				double bal = s.getDouble(1);
 				double finalamt = bal + amount;
-				if (finalamt > 0.0) {
-					System.out.println("Deposited amount : " + amount + " and Available Balance is : " + finalamt);
+				
+				if (finalamt > 0.0) 
+				{
+					System.out.println
+					("Deposited amount : " + amount + " and Available Balance is : " + finalamt);
+					
 					AccountOperations aops = new AccountOperations();
 					aops.updateBalanceInAccount(finalamt, c);
+					
 					ResultSet rs = getAccountById(c.getId());
-					if (rs != null) {
+					
+					 if (rs != null)
+					{
 						Account ac = new Account();
 						ac.setAccountNumber(rs.getString(1));
 						ac.setHolderName(rs.getString(2));
 						t.registerTransaction(ac, c, amount, TransactionType.Deposit);
-					} else {
-						System.out.println("Balance Updated but transaction entry failed");
 					}
-				} else {
+					 
+					 else 
+						{System.out.println("Balance Updated but transaction entry failed");}
+					
+				}
+				
+				else {
 					try {
 						throw new NegativeBalanceException("Negative Balance");
 					} catch (Exception e) {
@@ -218,25 +250,30 @@ public class AccountOperations implements AccountOps {
 		try {
 			ResultSet i = cops.getUserById(c.getId());
 			int kycstatus = i.getInt(6);
-			System.out.println(kycstatus);
+			
 			if (kycstatus == 0) {
 				System.out.println("Kyc Not Updated");
 				throw new ProcessTerminationException("Process Terminated");
-			} else {
-				String query = "select balance from accounts where customerId = ?";
+			}
+			
+			else
+			{	
+				String query = "select balance from accounts where id = ?";
 				PreparedStatement pst = con.prepareStatement(query);
 				pst.setString(1, c.getId());
 				ResultSet s = pst.executeQuery();
 				s.next();
 				double bal = s.getDouble(1);
-				if (bal > 0) {
-					System.out.println("Available Balance is : " + bal);
-				} else {
-					try {
-						throw new NegativeBalanceException("Negative Balance");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				
+				if (bal > 0) 
+				{ System.out.println("Available Balance is : " + bal);}
+				
+				else 
+				{
+					try 
+					{throw new NegativeBalanceException("Negative Balance");}
+					
+					catch (Exception e) {e.printStackTrace();}
 				}
 
 			}
@@ -291,7 +328,7 @@ public class AccountOperations implements AccountOps {
 				pstmt.setString(2, id);
 				int result = pstmt.executeUpdate();
 				if (result > 0) {
-					System.out.println(result + " Record Updated");
+					System.out.println("KYC Updated successfully");
 				} else {
 					System.out.println("Something Went Wrong");
 				}
@@ -307,7 +344,7 @@ public class AccountOperations implements AccountOps {
 
 	// Insert Record into Account Table
 	public void updateAccountsTable(Customer c) {
-		System.out.println("Came inside");
+	//	System.out.println("Came inside");
 		String query = "insert into accounts values(?,?,?,?,?,?,?,?)";
 		try {
 			Connection con2 = DbConnector.createMyConnection();
@@ -323,7 +360,8 @@ public class AccountOperations implements AccountOps {
 
 			int recordaffected = pstmt.executeUpdate();
 
-			System.out.println(recordaffected);
+//			System.out.println(recordaffected); // dont need this line
+			
 			if (recordaffected > 0) {
 				System.out.println("Account Added");
 			} else {

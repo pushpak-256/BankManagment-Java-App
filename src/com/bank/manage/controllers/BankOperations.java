@@ -9,26 +9,28 @@ public class BankOperations {
 	
 	public static void main(String[] args) throws SQLException, ProcessTerminationException, ClassNotFoundException {
 		CustomerOperations cops = new CustomerOperations();
-		AccountOperations aopss = new AccountOperations();
+		AccountOperations aops = new AccountOperations();
 		
 		Customer c = new Customer();
-	   // c.setId("1");
+	    c.setId("10002");
 	
 	
 		//cops.removeCustomer(10004);
-		
 	    //cops.registerCustomer(c);
-		
-	    //aopss.updateUserKYC(c.getId());
-		//aopss.createAccount(c);
+		// System.out.println(cops.checkCustomerKyc(c));// 0 or 0<
 	    
-	    //cops.getUserById(c.getId());
-	    //aopss.checkBalance(c);
+	    
+	  //  aops.updateUserKYC(c.getId());
+	aops.createAccount(c);
+	    
+	   // cops.getUserById(c.getId());
+	     //aops.checkBalance(c);
 	
-	    //aopss.deposit(c, 10000.0);
-	    //aopss.withdraw(c, 10000.0);
-		//aopss.closeAccount(c);
+	    //aops.deposit(c, 10000.0);
+	    //aops.withdraw(c, 10000.0);
+		//aops.closeAccount(c);
 		//cops.deleteCustomer(c);
 	}
 
 }
+

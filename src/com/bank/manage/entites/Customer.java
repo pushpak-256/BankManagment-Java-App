@@ -44,8 +44,6 @@ public class Customer {
 		this.phoneNo = phoneNo;
 	}
 
-	
-
 	public Account getAccount() {
 		return account;
 	}
