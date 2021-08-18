@@ -10,26 +10,25 @@ import com.bank.manage.dboperations.DbConnector;
 import com.bank.manage.entites.Address;
 import com.bank.manage.entites.Customer;
 import com.bank.manage.exceptions.ProcessTerminationException;
+import com.mysql.cj.xdevapi.InsertStatement;
 
 public class CustomerOperations {
 	Scanner sc = new Scanner(System.in);
 	Connection con = DbConnector.createMyConnection();
-	
+	ResultSet rs;
 
 	// register Customer in Bank without KYC and Account Creation
 	public void registerCustomer(Customer c) throws SQLException {
 		String query = "Select * from customers where id = ?";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setString(1, c.getId());
-		ResultSet rs = statement.executeQuery();
+		 rs = statement.executeQuery();
 		boolean status = rs.next();
 		try {
 			if (status) {
 				System.out.println("User with Specified Details Already Exists in Database");
 			} else {
-				
-//				System.out.println("Enter Id");
-//				String cid = sc.nextLine();
+
 				
 				System.out.println("Enter Name");
 				String name = sc.nextLine();
@@ -87,7 +86,21 @@ PreparedStatement insertstatement = con.prepareStatement
 				if (i <= 0) {
 					System.out.println("Something went Wrong");
 				} else {
-					System.out.println("Customer Registered Successfully");
+					
+					insertstatement=null;
+					rs=null;
+					int generatedID=0;
+					
+					insertstatement=con.prepareStatement("select id from customers where name=?");
+					insertstatement.setString(1, name);
+					
+					rs=insertstatement.executeQuery();
+	
+					if (rs.next()) {
+			           generatedID= rs.getInt(1);
+			       }
+					
+			System.out.println("Customer Registered Successfully & \n Your registration id is "+generatedID);
 				}
 
 			}
