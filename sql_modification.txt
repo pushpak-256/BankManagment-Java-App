@@ -1,0 +1,10 @@
+ALTER TABLE customers ADD CONSTRAINT PrimaryKey PRIMARY KEY (id);
+
+alter table accounts change customerId id int;
+
+ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);
+
+ALTER TABLE accounts CHANGE id id int NOT NULL;
+
+Alter table accounts add FOREIGN KEY(id) REFERENCES customers(id);
+
