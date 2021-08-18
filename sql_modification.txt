@@ -8,3 +8,4 @@ ALTER TABLE accounts CHANGE id id int NOT NULL;
 
 Alter table accounts add FOREIGN KEY(id) REFERENCES customers(id);
 
+dfs
