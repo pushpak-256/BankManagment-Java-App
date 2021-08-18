@@ -13,9 +13,10 @@ public class BankOperations {
 		
 		Customer c = new Customer();
 	   // c.setId("1");
-	    cops.registerCustomer(c);
+		cops.removeCustomer(10000);
+	    //cops.registerCustomer(c);
 	    //aopss.updateUserKYC(c.getId());
-		aopss.createAccount(c);
+		//aopss.createAccount(c);
 	    
 	    //cops.getUserById(c.getId());
 	    //aopss.checkBalance(c);

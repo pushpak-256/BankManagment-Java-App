@@ -27,8 +27,9 @@ public class CustomerOperations {
 			if (status) {
 				System.out.println("User with Specified Details Already Exists in Database");
 			} else {
-				System.out.println("Enter Id");
-				String cid = sc.nextLine();
+				
+//				System.out.println("Enter Id");
+//				String cid = sc.nextLine();
 				
 				System.out.println("Enter Name");
 				String name = sc.nextLine();
@@ -67,18 +68,20 @@ public class CustomerOperations {
 				
 				Address a = new Address(rNUmber, adressLine1, addressLine2, city, country, code);
 
-				PreparedStatement insertstatement = con
-						.prepareStatement("insert into customers values(?,?,?,?,?,?,?,?,?)");
-				insertstatement.setString(1, cid);
-				insertstatement.setString(2, name);
-				insertstatement.setString(3, email);
-				insertstatement.setString(4, phone);
-				insertstatement.setString(5, a.toString());
-				insertstatement.setInt(6, 0);
-				insertstatement.setString(7, adhar);
-				insertstatement.setString(8, pan);
-				insertstatement.setString(9, "Empty Account");
 
+
+PreparedStatement insertstatement = con.prepareStatement
+("INSERT INTO customers (name,email,phoneNumber,address,kycVerificationStatus,adharNumber,panNumber) values(?,?,?,?,?,?,?)");					
+
+				
+				insertstatement.setString(1, name);
+				insertstatement.setString(2, email);
+				insertstatement.setString(3, phone);
+				insertstatement.setString(4, a.toString());
+				insertstatement.setInt(5, 0);
+				insertstatement.setString(6, adhar);
+				insertstatement.setString(7, pan);
+				
 				int i = insertstatement.executeUpdate();
 
 				if (i <= 0) {
@@ -185,4 +188,23 @@ public class CustomerOperations {
         con.close();
 	}
 
+	//removing a customer record with this.id form customers table
+	public void removeCustomer(int id) throws SQLException {
+		
+	 PreparedStatement insertStatement =con.prepareStatement("DELETE FROM customers WHERE id=?");
+				
+			insertStatement.setInt(1, id);
+			
+			
+			int i = insertStatement.executeUpdate();
+
+			if (i <= 0) {
+				System.out.println("User doesnt exits with ID="+id);
+			} else {
+				System.out.println("Customer Removed Successfully");
+			}
+	}
+	
+	
+	
 }
