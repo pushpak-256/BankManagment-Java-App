@@ -162,9 +162,7 @@ PreparedStatement insertstatement = con.prepareStatement
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		finally {
-			con.close();
-		}
+		
 		return 0;
 	}
 
@@ -223,7 +221,7 @@ PreparedStatement insertstatement = con.prepareStatement
 	}
 	
 	//when we just need name form customers 
-	public void getUserNameById(String id) throws SQLException {
+	public String getUserNameById(String id) throws SQLException {
 		String query = "select name from customers where id = ?";
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
@@ -231,13 +229,24 @@ PreparedStatement insertstatement = con.prepareStatement
 			ResultSet res = pstmt.executeQuery();
 			
 			if (res.next()) {
-				System.out.println("User Found");
-				System.out.println(res.getString(1));
-			} else {
+				
+				return res.getString(1);
+				
+			}
+			
+			else 
+			{
 				System.out.println("User Not Found");
-					}
-		} 	catch (SQLException e) {e.printStackTrace();}}
+				return "";
+			}
+		}
+		
+		catch (SQLException e)
+		{e.printStackTrace();}
 	
-
+		 return "";
+	}
+	
+  
 	
 }

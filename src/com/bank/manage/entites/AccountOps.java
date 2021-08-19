@@ -1,8 +1,10 @@
 package com.bank.manage.entites;
 
+import java.sql.SQLException;
+
 public interface AccountOps {
 	
-	void createAccount(Customer c);
+	void createAccount(Customer c) ;
 	
 	void closeAccount(Customer c);
 	

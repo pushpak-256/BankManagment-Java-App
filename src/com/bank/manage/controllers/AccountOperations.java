@@ -25,47 +25,117 @@ public class AccountOperations implements AccountOps {
 	Connection con = DbConnector.createMyConnection();
 	CustomerOperations cops = new CustomerOperations();
 	TransactionOperations t = new TransactionOperations();
-
+ //   AccountOperations aops = new AccountOperations();
+    
 	/*
 	 * checks kYC Status with custID Does not allow creation of account if KYC is
 	 * pending Creates Account if KYC is Done And Updates Customer Table
 	 */
 	@Override
 	public void createAccount(Customer c) {
-		try {
-			int id = Integer.parseInt(c.getId()) ;
-			ResultSet resultset = cops.getUserById(c.getId());
-			
-			if (resultset != null) {
-				int kycstatus = resultset.getInt(6);
+	try
+		{
+		    if(cops.checkCustomerKyc(c)!=0) 
+			{
+		    	AccountOperations aops = new AccountOperations();
+		    	String accountNum=aops.containsAccount_With_ID(c.getId());
+		    	
+	    	   if ( accountNum !=null )
+	    	   {
+	    		   System.err.println
+	    		   ("User with id "+c.getId()+"\nalready has account with account number "+accountNum);
+			   } 
+	    	   
+	    	   else 
+	    	   {
+	    		   
+		    	System.out.println("Select 1 for Opening Savings Account or 2 for Current Account");
+				int accountchoice = sc.nextInt();
 				
-		//		System.out.println("@@@@@" + kycstatus); is it ok if rmove this line
-		 		
-	           
-            PreparedStatement stmt =
-            		con.prepareStatement("select * from accounts where id=?");
-            stmt.setInt(1, id); 
-           ResultSet i = stmt.executeQuery();
-           System.out.println(i+" int is ");
-           
-				if (kycstatus != 0) {
-				//	ResultSet resultset1 = cops.getA(c.getId());
+				Account ac = new Account();
+				
+			//account number
+				long accountNumberGenerated = ThreadLocalRandom.current().nextLong();
+				if(accountNumberGenerated<0) {accountNumberGenerated*=-1;}
+				
+				ac.setAccountNumber(Long.toString(accountNumberGenerated));
+			
+			//account holder name
+				String name = cops.getUserNameById(c.getId());
+				ac.setHolderName(name);
+				
+			//default bank details
+				ac.setBankName("SBI");
+				ac.setBranch_code("1025");
+				ac.setIfsc_code("SBIN0125");
+				
+				if (accountchoice == 1) {
+					ac.setAccountType(AccountType.SAVINGS);
+					ac.setBalance(1000);
 				} 
-				else {
-					
-					System.out.println("Please update KYC status ");
+				
+				else
+				{
+					ac.setAccountType(AccountType.CURRENT);
+					ac.setBalance(5000.0);
 				}
 				
-			} 
+				c.setAccount(ac);
 			
-			else {	System.out.println("User Not Found");
-			
+				//updating Accounts table
+				//AccountOperations aops = new AccountOperations();
+		    	aops.updateAccountsTable(c);}
 			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		    
+		    else
+			{
+				System.err.println("Please Complete Your KYC first");
+                throw new ProcessTerminationException("KYC is not verified");			
+			}
+		} 
+	catch (SQLException | ProcessTerminationException e) 
+		{
+		// e.getStackTrace();
+		 e.getMessage();
+		} 
+		
+	
+		
 	}
+	//		try {
+//			int id = Integer.parseInt(c.getId()) ;
+//			ResultSet resultset = cops.getUserById(c.getId());
+//			
+//			if (resultset != null) {
+//				int kycstatus = resultset.getInt(6);
+//				
+//		
+//		 		
+//	           
+//            PreparedStatement stmt =
+//            		con.prepareStatement("select * from accounts where id=?");
+//            stmt.setInt(1, id); 
+//           ResultSet i = stmt.executeQuery();
+//           System.out.println(i+" int is ");
+//           
+//				if (kycstatus != 0) {
+//				//	ResultSet resultset1 = cops.getA(c.getId());
+//				} 
+//				else {
+//					
+//					System.out.println("Please update KYC status ");
+//				}
+//				
+//			} 
+//			
+//			else {	System.out.println("User Not Found");
+//			
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/*
 	 * Deposit Amount to customer Account and Display it
@@ -85,7 +155,7 @@ public class AccountOperations implements AccountOps {
 			 
 			 else
 			{
-				String query = "select balance from accounts where customerId = ?";
+				String query = "select balance from accounts where id = ?";
 				PreparedStatement pst = con.prepareStatement(query);
 				pst.setString(1, c.getId());
 				ResultSet s = pst.executeQuery();
@@ -147,7 +217,7 @@ public class AccountOperations implements AccountOps {
 					System.out.println("Kyc Not Updated");
 					throw new ProcessTerminationException("Process Terminated");
 				} else {
-					String query = "select balance,accountType from accounts where customerId = ?";
+					String query = "select balance,accountType from accounts where id = ?";
 					PreparedStatement pst = con.prepareStatement(query);
 					pst.setString(1, c.getId());
 					ResultSet s = pst.executeQuery();
@@ -270,7 +340,7 @@ public class AccountOperations implements AccountOps {
 	 */
 	@Override
 	public void closeAccount(Customer c) {
-		String query = "Select * from accounts where customerId = ?";
+		String query = "Select * from accounts where id = ?";
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
 			stmt.setString(1, c.getId());
@@ -281,7 +351,7 @@ public class AccountOperations implements AccountOps {
 				System.out.println("Balance Should be 0 before Closing the Account");
 				throw new ProcessTerminationException("Please Debit All the Balance Amount From Account");
 			} else {
-				String deletequery = "Delete from accounts where customerId = ?";
+				String deletequery = "Delete from accounts where id = ?";
 				PreparedStatement pstmt = con.prepareStatement(deletequery);
 				pstmt.setString(1, c.getId());
 				int result = pstmt.executeUpdate();
@@ -326,7 +396,7 @@ public class AccountOperations implements AccountOps {
 
 	// Insert Record into Account Table
 	public void updateAccountsTable(Customer c) {
-	//	System.out.println("Came inside");
+
 		String query = "insert into accounts values(?,?,?,?,?,?,?,?)";
 		try {
 			Connection con2 = DbConnector.createMyConnection();
@@ -342,22 +412,21 @@ public class AccountOperations implements AccountOps {
 
 			int recordaffected = pstmt.executeUpdate();
 
-//			System.out.println(recordaffected); // dont need this line
-			
 			if (recordaffected > 0) {
-				System.out.println("Account Added");
+				AccountOperations aops = new AccountOperations();
+				System.out.println
+				("Account Added \nwith Account Number "+aops.containsAccount_With_ID(c.getId()));
 			} else {
 				System.out.println("Something Went Wrong");
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void updateBalanceInAccount(double balance, Customer c) {
-		String query = "update accounts set balance = ? where customerId = ? ";
+		String query = "update accounts set balance = ? where id = ? ";
 		try {
 			Connection con2 = DbConnector.createMyConnection();
 			PreparedStatement pstmt = con2.prepareStatement(query);
@@ -374,13 +443,13 @@ public class AccountOperations implements AccountOps {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	//not needed this method anymore
 	public ResultSet getAccountById(String id) throws SQLException {
-		String query = "select * from accounts where customerId = ?";
+		String query = "select * from accounts where id = ?";
 		try {
 			PreparedStatement pstmt = con.prepareStatement(query);
 			pstmt.setString(1, id);
@@ -390,6 +459,28 @@ public class AccountOperations implements AccountOps {
 				return res;
 			} else {
 				System.out.println("Account Not Found");
+				return null;
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public String containsAccount_With_ID(String id) throws SQLException {
+		
+		String query = "select accountNumber from accounts where id = ?";
+		
+		try {
+			PreparedStatement pstmt = con.prepareStatement(query);
+			pstmt.setString(1, id);
+			ResultSet res = pstmt.executeQuery();
+			
+			if (res.next())
+			{return res.getString(1);} 
+			else {
+			
 				return null;
 			}
 		} catch (SQLException e) {

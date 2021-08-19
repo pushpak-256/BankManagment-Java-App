@@ -16,7 +16,7 @@ static Connection connection;
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			//create the connection 
-			String url = "jdbc:mysql://localhost:3306/bank_system";
+			String url = "jdbc:mysql://localhost:3306/montran";
 			String user = "root";
 			String password = "root";
 			

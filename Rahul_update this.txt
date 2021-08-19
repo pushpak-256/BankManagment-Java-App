@@ -1,0 +1,38 @@
+
+					System.out.println("Select 1 for Opening Savings Account or 2 for Current Account");
+					int accountchoice = sc.nextInt();
+					
+					Account ac = new Account();
+					
+					long accountNumberGenerated = ThreadLocalRandom.current().nextLong();
+					if(accountNumberGenerated<0) {accountNumberGenerated*=-1;}
+					
+					ac.setAccountNumber(Long.toString(accountNumberGenerated));
+				
+					String name = resultset.getString(2);
+					ac.setHolderName(name);
+					ac.setBankName("SBI");
+					ac.setBranch_code("1025");
+					ac.setIfsc_code("SBIN0125");
+					
+					if (accountchoice == 1) {
+						ac.setAccountType(AccountType.SAVINGS);
+						ac.setBalance(1000);
+					} 
+					
+					else
+					{
+						ac.setAccountType(AccountType.CURRENT);
+						ac.setBalance(5000.0);
+					}
+					
+					c.setAccount(ac);
+
+					
+			//removed this method 	//	cops.updateCustomerTable(c);
+					
+					//updating Accounts table
+					AccountOperations aops = new AccountOperations();
+			    	aops.updateAccountsTable(c);
+
+				

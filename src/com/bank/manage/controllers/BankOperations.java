@@ -12,22 +12,23 @@ public class BankOperations {
 		AccountOperations aops = new AccountOperations();
 		
 		Customer c = new Customer();
-	    c.setId("10001");
+	 //   c.setId("10002");
 	
 	
 		//cops.removeCustomer(10004);
-	    //cops.registerCustomer(c);
+	    cops.registerCustomer(c);
 		// System.out.println(cops.checkCustomerKyc(c));// 0 or 0<
 	    
-	    
+	   //System.out.println(aops.containsAccount_With_ID(c.getId()));  //check if any account associated with id
+	   
 	  //  aops.updateUserKYC(c.getId());
-	    aops.createAccount(c);
+	 //  aops.createAccount(c);
 	    
 	    //cops.getUserNameById(c.getId());
 	   // cops.getUserById(c.getId());
 	     //aops.checkBalance(c);
 	
-	    //aops.deposit(c, 10000.0);
+	  //  aops.deposit(c, 1.0);
 	    //aops.withdraw(c, 10000.0);
 		//aops.closeAccount(c);
 		//cops.deleteCustomer(c);
