@@ -1,0 +1,1159 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 44
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use bank_system;
+Database changed
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| id                    | int           | NO   | PRI | NULL    |       |
+| name                  | varchar(20)   | YES  |     | NULL    |       |
+| email                 | varchar(25)   | YES  |     | NULL    |       |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |       |
+| address               | varchar(100)  | YES  |     | NULL    |       |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |       |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |       |
+| panNumber             | varchar(10)   | YES  |     | NULL    |       |
+| account               | longtext      | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+9 rows in set (0.22 sec)
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| customerId    | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE accounts RENAME customerID  to id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to id' at line 1
+mysql> ALTER TABLE accounts RENAME customerID to id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to id' at line 1
+mysql> ALTER TABLE accounts RENAME customerId to id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to id' at line 1
+mysql> ALTER TABLE accounts RENAME customerId to id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to id' at line 1
+mysql> alter table accounts change customerId id int;
+Query OK, 0 rows affected (0.76 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);
+Query OK, 0 rows affected (3.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | YES  | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.08 sec)
+
+mysql> ALTER TABLE accounts alter column id int not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int not null' at line 1
+mysql> ALTER TABLE accounts CHANGE id id int NOT NULL;
+Query OK, 0 rows affected (2.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.09 sec)
+
+mysql> Alter table accounts add FOREIGN KEY(id) REFERENCES customer(id);
+ERROR 1824 (HY000): Failed to open the referenced table 'customer'
+mysql> Alter table accounts add FOREIGN KEY(id) REFERENCES customers(id);
+Query OK, 0 rows affected (3.64 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| id                    | int           | NO   | PRI | NULL    |       |
+| name                  | varchar(20)   | YES  |     | NULL    |       |
+| email                 | varchar(25)   | YES  |     | NULL    |       |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |       |
+| address               | varchar(100)  | YES  |     | NULL    |       |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |       |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |       |
+| panNumber             | varchar(10)   | YES  |     | NULL    |       |
+| account               | longtext      | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+9 rows in set (0.05 sec)
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE customers MODIFY COLUMN id INT auto_increment;
+ERROR 1833 (HY000): Cannot change column 'id': used in a foreign key constraint 'accounts_ibfk_1' of table 'bank_system.accounts'
+mysql> ALTER TABLE customers AUTO_INCREMENT=9999;
+Query OK, 0 rows affected (0.33 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> ALTER TABLE customers MODIFY COLUMN id INT auto_increment;
+ERROR 1833 (HY000): Cannot change column 'id': used in a foreign key constraint 'accounts_ibfk_1' of table 'bank_system.accounts'
+mysql> ALTER TABLE accounts drop COLUMN id;
+ERROR 1828 (HY000): Cannot drop column 'id': needed in a foreign key constraint 'accounts_ibfk_1'
+mysql> ALTER TABLE accounts drop FOREIGN KEY id;
+ERROR 1091 (42000): Can't DROP 'id'; check that column/key exists
+mysql> ALTER TABLE accounts drop foreign key id;
+ERROR 1091 (42000): Can't DROP 'id'; check that column/key exists
+mysql> alter table accounts drop foreign key id;
+ERROR 1091 (42000): Can't DROP 'id'; check that column/key exists
+mysql> desc accounts
+    -> desc accounts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc accounts' at line 2
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.08 sec)
+
+mysql> drop table accounts;
+Query OK, 0 rows affected (0.99 sec)
+
+mysql> desc accounts
+    -> desc accounts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc accounts' at line 2
+mysql> desc accounts;
+ERROR 1146 (42S02): Table 'bank_system.accounts' doesn't exist
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| id                    | int           | NO   | PRI | NULL    |       |
+| name                  | varchar(20)   | YES  |     | NULL    |       |
+| email                 | varchar(25)   | YES  |     | NULL    |       |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |       |
+| address               | varchar(100)  | YES  |     | NULL    |       |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |       |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |       |
+| panNumber             | varchar(10)   | YES  |     | NULL    |       |
+| account               | longtext      | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+9 rows in set (0.11 sec)
+
+mysql> ALTER TABLE customers MODIFY COLUMN id INT auto_increment;
+Query OK, 0 rows affected (2.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE customers AUTO_INCREMENT=9999;
+Query OK, 0 rows affected (0.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+----------------+
+| Field                 | Type          | Null | Key | Default | Extra          |
++-----------------------+---------------+------+-----+---------+----------------+
+| id                    | int           | NO   | PRI | NULL    | auto_increment |
+| name                  | varchar(20)   | YES  |     | NULL    |                |
+| email                 | varchar(25)   | YES  |     | NULL    |                |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |                |
+| address               | varchar(100)  | YES  |     | NULL    |                |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |                |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |                |
+| panNumber             | varchar(10)   | YES  |     | NULL    |                |
+| account               | longtext      | YES  |     | NULL    |                |
++-----------------------+---------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> create table accounts (accountNumber long ,Holdername varchar(20),accountType varchar(20),bankName varchar(12),branchCode varchar(10),ifscCode varchar(10),balance double );
+Query OK, 0 rows affected (0.77 sec)
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> alter table accounts add customerId int;
+Query OK, 0 rows affected (0.45 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| customerId    | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.04 sec)
+
+mysql> alter table accounts change customerId id int;
+Query OK, 0 rows affected (0.29 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE accounts CHANGE id id int NOT NULL;
+Query OK, 0 rows affected (0.93 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);
+Query OK, 0 rows affected (2.90 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.08 sec)
+
+mysql> alter table customers drop account;
+Query OK, 0 rows affected (1.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+----------------+
+| Field                 | Type          | Null | Key | Default | Extra          |
++-----------------------+---------------+------+-----+---------+----------------+
+| id                    | int           | NO   | PRI | NULL    | auto_increment |
+| name                  | varchar(20)   | YES  |     | NULL    |                |
+| email                 | varchar(25)   | YES  |     | NULL    |                |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |                |
+| address               | varchar(100)  | YES  |     | NULL    |                |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |                |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |                |
+| panNumber             | varchar(10)   | YES  |     | NULL    |                |
++-----------------------+---------------+------+-----+---------+----------------+
+8 rows in set (0.09 sec)
+
+mysql> select * from customers;
++------+------+-------+-------------+----------------------------------+-----------------------+-------------+------------+
+| id   | name | email | phoneNumber | address                          | kycVerificationStatus | adharNumber | panNumber  |
++------+------+-------+-------------+----------------------------------+-----------------------+-------------+------------+
+| 9999 | AFDS | SFGD  |         965 | 324, fds, asdf, fdahg, asdf, 324 |                     0 | afsdfds32   | sdaffdsa43 |
++------+------+-------+-------------+----------------------------------+-----------------------+-------------+------------+
+1 row in set (0.00 sec)
+
+mysql> truncate table customers;
+ERROR 1701 (42000): Cannot truncate a table referenced in a foreign key constraint (`bank_system`.`accounts`, CONSTRAINT `accounts_ibfk_1`)
+mysql>  DELETE FROM customers WHERE id=1;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> select * from customers;
++------+------+-------+-------------+----------------------------------+-----------------------+-------------+------------+
+| id   | name | email | phoneNumber | address                          | kycVerificationStatus | adharNumber | panNumber  |
++------+------+-------+-------------+----------------------------------+-----------------------+-------------+------------+
+| 9999 | AFDS | SFGD  |         965 | 324, fds, asdf, fdahg, asdf, 324 |                     0 | afsdfds32   | sdaffdsa43 |
++------+------+-------+-------------+----------------------------------+-----------------------+-------------+------------+
+1 row in set (0.00 sec)
+
+mysql>  DELETE FROM customers WHERE id=9999;
+Query OK, 1 row affected (0.15 sec)
+
+mysql> select * from customers;
+Empty set (0.00 sec)
+
+mysql> select * from customers;
++-------+------+---------+-------------+------------------------------------------+-----------------------+-------------+-----------+
+| id    | name | email   | phoneNumber | address                                  | kycVerificationStatus | adharNumber | panNumber |
++-------+------+---------+-------------+------------------------------------------+-----------------------+-------------+-----------+
+| 10000 | sdf  | jadksfl |      324342 | 32, asdkfhl, ahjksldf, mum, ind, 3241243 |                     0 | 1234j       | pan32     |
++-------+------+---------+-------------+------------------------------------------+-----------------------+-------------+-----------+
+1 row in set (0.05 sec)
+
+mysql> select * from customers;
+Empty set (0.00 sec)
+
+mysql> select * from customers;
+Empty set (0.00 sec)
+
+mysql> select * from customers;
++-------+---------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name    | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+---------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     0 | adhar1212   | pan1212   |
++-------+---------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+1 row in set (0.07 sec)
+
+mysql> select id from customers where name='Pushpak'
+    -> select id from customers where name='Pushpak';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select id from customers where name='Pushpak'' at line 2
+mysql> select id from customers where name='Pushpak';
++-------+
+| id    |
++-------+
+| 10001 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select * from customers;
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name         | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak      | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     0 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma  | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     0 | adhar121212 | pan4343   |
+| 10003 | Rahul Sharma | mail@.vom              |    21342341 | 32, add1, add2, mumbai, ind, 123223                   |                     0 | ad1242      | pan32541  |
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customers;
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name         | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak      | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     0 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma  | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     0 | adhar121212 | pan4343   |
+| 10003 | Rahul Sharma | mail@.vom              |    21342341 | 32, add1, add2, mumbai, ind, 123223                   |                     0 | ad1242      | pan32541  |
+| 10004 | adsf         | afsd                   |         435 | 4352, fds, dfg, sfdg, fdsg, 4352                      |                     0 | df          | sdgf      |
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+4 rows in set (0.03 sec)
+
+mysql> select * from customers;
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name         | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak      | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     0 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma  | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     0 | adhar121212 | pan4343   |
+| 10003 | Rahul Sharma | mail@.vom              |    21342341 | 32, add1, add2, mumbai, ind, 123223                   |                     0 | ad1242      | pan32541  |
+| 10004 | adsf         | afsd                   |         435 | 4352, fds, dfg, sfdg, fdsg, 4352                      |                     0 | df          | sdgf      |
+| 10005 | Nidhi        | mail                   |  2312341234 | 21, add1, add2, mumbai, ind, 3214                     |                     0 | ad23        | pan23     |
++-------+--------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customers;
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name        | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak     | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     0 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     0 | adhar121212 | pan4343   |
+| 10005 | Nidhi       | mail                   |  2312341234 | 21, add1, add2, mumbai, ind, 3214                     |                     0 | ad23        | pan23     |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customers;
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name        | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak     | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     1 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     0 | adhar121212 | pan4343   |
+| 10005 | Nidhi       | mail                   |  2312341234 | 21, add1, add2, mumbai, ind, 3214                     |                     0 | ad23        | pan23     |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+3 rows in set (0.07 sec)
+
+mysql> select * from accounts;\
++---------------+------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber | Holdername | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------+------------+-------------+----------+------------+----------+---------+-------+
+| 748471469     | Pushpak    | SAVINGS     | SBI      | 1025       | SBIN0125 |    1000 | 10001 |
++---------------+------------+-------------+----------+------------+----------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from accounts;
++---------------+-------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber | Holdername  | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------+-------------+-------------+----------+------------+----------+---------+-------+
+| 748471469     | Pushpak     | SAVINGS     | SBI      | 1025       | SBIN0125 |    1000 | 10001 |
+| -934865846    | Rahul Verma | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10002 |
+| 761585084     | Rahul Verma | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10002 |
+| -354456779    | Rahul Verma | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10002 |
++---------------+-------------+-------------+----------+------------+----------+---------+-------+
+4 rows in set (0.06 sec)
+
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+----------------+
+| Field                 | Type          | Null | Key | Default | Extra          |
++-----------------------+---------------+------+-----+---------+----------------+
+| id                    | int           | NO   | PRI | NULL    | auto_increment |
+| name                  | varchar(20)   | YES  |     | NULL    |                |
+| email                 | varchar(25)   | YES  |     | NULL    |                |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |                |
+| address               | varchar(100)  | YES  |     | NULL    |                |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |                |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |                |
+| panNumber             | varchar(10)   | YES  |     | NULL    |                |
++-----------------------+---------------+------+-----+---------+----------------+
+8 rows in set (0.21 sec)
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE accounts ADD CONSTRAINT accounts_unique UNIQUE (id);
+ERROR 1062 (23000): Duplicate entry '10002' for key 'accounts.accounts_unique'
+mysql> delete from table accounts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table accounts' at line 1
+mysql> delete from accounts;
+Query OK, 4 rows affected (0.16 sec)
+
+mysql> ALTER TABLE accounts ADD CONSTRAINT accounts_unique UNIQUE (id);
+Query OK, 0 rows affected (2.32 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from accounts;
+Empty set (0.00 sec)
+
+mysql> select * from accounts where id=10001;
+Empty set (0.09 sec)
+
+mysql> select * from accounts where id=10001;
+Empty set (0.00 sec)
+
+mysql> select * from accounts;
++---------------+-------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber | Holdername  | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------+-------------+-------------+----------+------------+----------+---------+-------+
+| -1321750521   | Rahul Verma | SAVINGS     | SBI      | 1025       | SBIN0125 |    1000 | 10002 |
++---------------+-------------+-------------+----------+------------+----------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> delete from accounts;
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from accounts;
+Empty set (0.00 sec)
+
+mysql> select * from customers;
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name        | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak     | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     1 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     1 | adhar121212 | pan4343   |
+| 10005 | Nidhi       | mail                   |  2312341234 | 21, add1, add2, mumbai, ind, 3214                     |                     0 | ad23        | pan23     |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from accounts;
+Empty set (0.00 sec)
+
+mysql> select name from customers where id =10001;
++---------+
+| name    |
++---------+
+| Pushpak |
++---------+
+1 row in set (0.06 sec)
+
+mysql> select * from accounts;
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber       | Holdername | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+| 8610427906554149948 | Pushpak    | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10001 |
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+1 row in set (0.02 sec)
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   | PRI | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.80 sec)
+
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+----------------+
+| Field                 | Type          | Null | Key | Default | Extra          |
++-----------------------+---------------+------+-----+---------+----------------+
+| id                    | int           | NO   | PRI | NULL    | auto_increment |
+| name                  | varchar(20)   | YES  |     | NULL    |                |
+| email                 | varchar(25)   | YES  |     | NULL    |                |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |                |
+| address               | varchar(100)  | YES  |     | NULL    |                |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |                |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |                |
+| panNumber             | varchar(10)   | YES  |     | NULL    |                |
++-----------------------+---------------+------+-----+---------+----------------+
+8 rows in set (0.06 sec)
+
+mysql> select * from customers;
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name        | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak     | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     1 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     1 | adhar121212 | pan4343   |
+| 10005 | Nidhi       | mail                   |  2312341234 | 21, add1, add2, mumbai, ind, 3214                     |                     0 | ad23        | pan23     |
+| 10006 | jklasdf     | afsdhjkl               |    32141324 | 21, jdkhsfa, hjsdkafl, asjkdf, hakjfsd, 1221          |                     0 | a23         | p21       |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+4 rows in set (0.04 sec)
+
+mysql>Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 264
+Server version: 8.0.25 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> select * from accounts
+    -> select * from accounts;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from accounts' at line 2
+mysql> select * from accounts;
+ERROR 1046 (3D000): No database selected
+mysql> use bank_system;
+Database changed
+mysql> select * from accounts;
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber       | Holdername | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+| 8610427906554149948 | Pushpak    | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10001 |
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+1 row in set (0.15 sec)
+
+mysql> select * from customers;
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| id    | name        | email                  | phoneNumber | address                                               | kycVerificationStatus | adharNumber | panNumber |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+| 10001 | Pushpak     | pushpak70707@gmail.com |  7897897990 | 102, pragati royals, this.road, kalyan, india, 421311 |                     1 | adhar1212   | pan1212   |
+| 10002 | Rahul Verma | rahul.mail             |         123 | 1234, add1, add2, mumbai, ind, 400400                 |                     1 | adhar121212 | pan4343   |
+| 10005 | Nidhi       | mail                   |  2312341234 | 21, add1, add2, mumbai, ind, 3214                     |                     0 | ad23        | pan23     |
+| 10006 | jklasdf     | afsdhjkl               |    32141324 | 21, jdkhsfa, hjsdkafl, asjkdf, hakjfsd, 1221          |                     0 | a23         | p21       |
++-------+-------------+------------------------+-------------+-------------------------------------------------------+-----------------------+-------------+-----------+
+4 rows in set (0.06 sec)
+
+mysql> select accountNumber from accounts where customerId = 10001;
+ERROR 1054 (42S22): Unknown column 'customerId' in 'where clause'
+mysql> select accountNumber from accounts where id = 10001;
++---------------------+
+| accountNumber       |
++---------------------+
+| 8610427906554149948 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from accounts;
++---------------------+-------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber       | Holdername  | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------------+-------------+-------------+----------+------------+----------+---------+-------+
+| 8610427906554149948 | Pushpak     | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10001 |
+| 2368971175605104858 | Rahul Verma | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10002 |
++---------------------+-------------+-------------+----------+------------+----------+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> delete acconts where id =10002;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id =10002' at line 1
+mysql> delete from acconts where id =10002;
+ERROR 1146 (42S02): Table 'bank_system.acconts' doesn't exist
+mysql> delete from accounts where id =10002;
+Query OK, 1 row affected (0.18 sec)
+
+mysql> select * from accounts;
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber       | Holdername | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+| 8610427906554149948 | Pushpak    | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10001 |
++---------------------+------------+-------------+----------+------------+----------+---------+-------+
+1 row in set (0.03 sec)
+
+mysql> select * from accounts;
++---------------------+-------------+-------------+----------+------------+----------+---------+-------+
+| accountNumber       | Holdername  | accountType | bankName | branchCode | ifscCode | balance | id    |
++---------------------+-------------+-------------+----------+------------+----------+---------+-------+
+| 8610427906554149948 | Pushpak     | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10001 |
+| 1863439626208403887 | Rahul Verma | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 10002 |
++---------------------+-------------+-------------+----------+------------+----------+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> use montran
+Database changed
+mysql> create table customers (id int ,name varchar(20),email varchar(25),phoneNumber numeric(10),address varchar(100),kycVerificationStatus BOOLEAN,adharNumber varchar(12),panNumber varchar(10));alter table customers add account longtext;create table accounts (accountNumber long ,Holdername varchar(20),accountType varchar(20),bankName varchar(12),branchCode varchar(10),ifscCode varchar(10),balance double );describe accounts;alter table accounts add customerId int;alter table accounts change customerId id int;ALTER TABLE accounts CHANGE id id int NOT NULL; ALTER TABLE customers MODIFY COLUMN id INT auto_increment; ALTER TABLE customers AUTO_INCREMENT=9999;ALTER TABLE customers ADD CONSTRAINT PrimaryKey PRIMARY KEY (id);ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);Alter table accounts add FOREIGN KEY(id) REFERENCES customers(id);ALTER TABLE accounts ADD CONSTRAINT accounts_unique UNIQUE (id);
+Query OK, 0 rows affected (2.66 sec)
+
+Query OK, 0 rows affected (1.37 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.11 sec)
+
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+7 rows in set (0.23 sec)
+
+Query OK, 0 rows affected (0.99 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.59 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.87 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.19 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.89 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| id                    | int           | NO   | PRI | NULL    |       |
+| name                  | varchar(20)   | YES  |     | NULL    |       |
+| email                 | varchar(25)   | YES  |     | NULL    |       |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |       |
+| address               | varchar(100)  | YES  |     | NULL    |       |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |       |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |       |
+| panNumber             | varchar(10)   | YES  |     | NULL    |       |
+| account               | longtext      | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+9 rows in set (0.07 sec)
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   | PRI | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> insert into customers (name) values ("pushpak");
+ERROR 1364 (HY000): Field 'id' doesn't have a default value
+mysql>  ALTER TABLE customers AUTO_INCREMENT=9999;
+Query OK, 0 rows affected (0.51 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into customers (name) values ("pushpak");
+ERROR 1364 (HY000): Field 'id' doesn't have a default value
+mysql>  ALTER TABLE customers MODIFY COLUMN id INT auto_increment;
+ERROR 1833 (HY000): Cannot change column 'id': used in a foreign key constraint 'accounts_ibfk_1' of table 'montran.accounts'
+mysql> drop table customers;
+ERROR 3730 (HY000): Cannot drop table 'customers' referenced by a foreign key constraint 'accounts_ibfk_1' on table 'accounts'.
+mysql> drop table accounts;
+Query OK, 0 rows affected (0.67 sec)
+
+mysql> drop table customers;
+Query OK, 0 rows affected (0.87 sec)
+
+mysql> desc accounts;
+ERROR 1146 (42S02): Table 'montran.accounts' doesn't exist
+mysql> create table customers (id int ,name varchar(20),email varchar(25),phoneNumber numeric(10),address varchar(100),kycVerificationStatus BOOLEAN,adharNumber varchar(12),panNumber varchar(10));alter table customers add account longtext;create table accounts (accountNumber long ,Holdername varchar(20),accountType varchar(20),bankName varchar(12),branchCode varchar(10),ifscCode varchar(10),balance double );alter table accounts add customerId int;alter table accounts change customerId id int;ALTER TABLE accounts CHANGE id id int NOT NULL;ALTER TABLE customers MODIFY COLUMN id INT auto_increment;ALTER TABLE customers AUTO_INCREMENT=9999;ALTER TABLE customers ADD CONSTRAINT PrimaryKey PRIMARY KEY (id);ALTER TABLE accounts ADD CONSTRAINT accounts_unique UNIQUE (id);ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);
+Query OK, 0 rows affected (0.41 sec)
+
+Query OK, 0 rows affected (0.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.46 sec)
+
+Query OK, 0 rows affected (0.64 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.98 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+Query OK, 0 rows affected (0.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop table accounts;
+Query OK, 0 rows affected (0.64 sec)
+
+mysql> drop table customers;
+Query OK, 0 rows affected (0.65 sec)
+
+mysql> create table customers (id int ,name varchar(20),email varchar(25),phoneNumber numeric(10),address varchar(100),kycVerificationStatus BOOLEAN,adharNumber varchar(12),panNumber varchar(10));alter table customers add account longtext;create table accounts (accountNumber long ,Holdername varchar(20),accountType varchar(20),bankName varchar(12),branchCode varchar(10),ifscCode varchar(10),balance double );alter table accounts add customerId int;alter table accounts change customerId id int;ALTER TABLE accounts CHANGE id id int NOT NULL;
+Query OK, 0 rows affected (0.83 sec)
+
+Query OK, 0 rows affected (0.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.62 sec)
+
+Query OK, 0 rows affected (0.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.94 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.08 sec)
+
+mysql> drop table customers;
+Query OK, 0 rows affected (0.43 sec)
+
+mysql> drop table accounts;
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> create table customers (id int ,name varchar(20),email varchar(25),phoneNumber numeric(10),address varchar(100),kycVerificationStatus BOOLEAN,adharNumber varchar(12),panNumber varchar(10));alter table customers add account longtext;create table accounts (accountNumber long ,Holdername varchar(20),accountType varchar(20),bankName varchar(12),branchCode varchar(10),ifscCode varchar(10),balance double );alter table accounts add customerId int;alter table accounts change customerId id int;ALTER TABLE accounts CHANGE id id int NOT NULL;
+Query OK, 0 rows affected (0.39 sec)
+
+Query OK, 0 rows affected (0.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.46 sec)
+
+Query OK, 0 rows affected (0.30 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.92 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| id                    | int           | YES  |     | NULL    |       |
+| name                  | varchar(20)   | YES  |     | NULL    |       |
+| email                 | varchar(25)   | YES  |     | NULL    |       |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |       |
+| address               | varchar(100)  | YES  |     | NULL    |       |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |       |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |       |
+| panNumber             | varchar(10)   | YES  |     | NULL    |       |
+| account               | longtext      | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+9 rows in set (0.06 sec)
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE customers MODIFY COLUMN id INT auto_increment;ALTER TABLE customers AUTO_INCREMENT=9999;
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc accounts;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| accountNumber | mediumtext  | YES  |     | NULL    |       |
+| Holdername    | varchar(20) | YES  |     | NULL    |       |
+| accountType   | varchar(20) | YES  |     | NULL    |       |
+| bankName      | varchar(12) | YES  |     | NULL    |       |
+| branchCode    | varchar(10) | YES  |     | NULL    |       |
+| ifscCode      | varchar(10) | YES  |     | NULL    |       |
+| balance       | double      | YES  |     | NULL    |       |
+| id            | int         | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> desc customers;
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| id                    | int           | YES  |     | NULL    |       |
+| name                  | varchar(20)   | YES  |     | NULL    |       |
+| email                 | varchar(25)   | YES  |     | NULL    |       |
+| phoneNumber           | decimal(10,0) | YES  |     | NULL    |       |
+| address               | varchar(100)  | YES  |     | NULL    |       |
+| kycVerificationStatus | tinyint(1)    | YES  |     | NULL    |       |
+| adharNumber           | varchar(12)   | YES  |     | NULL    |       |
+| panNumber             | varchar(10)   | YES  |     | NULL    |       |
+| account               | longtext      | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
+9 rows in set (0.30 sec)
+
+mysql> ALTER TABLE customers ADD CONSTRAINT PrimaryKey PRIMARY KEY (id);ALTER TABLE accounts ADD CONSTRAINT accounts_unique UNIQUE (id);ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);
+Query OK, 0 rows affected (1.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (2.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE customers MODIFY COLUMN id INT auto_increment;ALTER TABLE customers AUTO_INCREMENT=9999;
+ERROR 1833 (HY000): Cannot change column 'id': used in a foreign key constraint 'accounts_ibfk_1' of table 'montran.accounts'
+Query OK, 0 rows affected (0.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop table accounts;
+Query OK, 0 rows affected (0.65 sec)
+
+mysql> drop table customers;
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> create table customers (id int ,name varchar(20),email varchar(25),phoneNumber numeric(10),address varchar(100),kycVerificationStatus BOOLEAN,adharNumber varchar(12),panNumber varchar(10));alter table customers add account longtext;create table accounts (accountNumber long ,Holdername varchar(20),accountType varchar(20),bankName varchar(12),branchCode varchar(10),ifscCode varchar(10),balance double );alter table accounts add customerId int;alter table accounts change customerId id int;ALTER TABLE accounts CHANGE id id int NOT NULL;ALTER TABLE customers ADD CONSTRAINT PrimaryKey PRIMARY KEY (id);ALTER TABLE customers MODIFY COLUMN id INT auto_increment;ALTER TABLE customers AUTO_INCREMENT=9999;ALTER TABLE accounts ADD CONSTRAINT accounts_unique UNIQUE (id);ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);
+Query OK, 0 rows affected (0.41 sec)
+
+Query OK, 0 rows affected (0.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.80 sec)
+
+Query OK, 0 rows affected (0.98 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.64 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.63 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.26 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (1.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (3.42 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++------+------+-------+-------------+-------------------------------+-----------------------+-------------+-----------+---------+
+| id   | name | email | phoneNumber | address                       | kycVerificationStatus | adharNumber | panNumber | account |
++------+------+-------+-------------+-------------------------------+-----------------------+-------------+-----------+---------+
+| 9999 | hjk  | dsaf  |          32 | 32, sdf, adsf, asfd, adfs, 23 |                     0 | 32          | 23        | NULL    |
++------+------+-------+-------------+-------------------------------+-----------------------+-------------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> create table transaction(id int, amount double, sentByAccNo varchar(100), sentByName varchar(100), receiverAccNo varchar(100), receiverName varchar(100), transactionType varchar(55), date varchar(55));
+Query OK, 0 rows affected (1.45 sec)
+
+mysql> select * from customers;
++------+------+-------+-------------+-------------------------------+-----------------------+-------------+-----------+---------+
+| id   | name | email | phoneNumber | address                       | kycVerificationStatus | adharNumber | panNumber | account |
++------+------+-------+-------------+-------------------------------+-----------------------+-------------+-----------+---------+
+| 9999 | hjk  | dsaf  |          32 | 32, sdf, adsf, asfd, adfs, 23 |                     0 | 32          | 23        | NULL    |
++------+------+-------+-------------+-------------------------------+-----------------------+-------------+-----------+---------+
+1 row in set (0.06 sec)
+
+mysql> select * from accounts;
+Empty set (0.06 sec)
+
+mysql> select * from accounts;
++---------------------+------------+-------------+----------+------------+----------+---------+------+
+| accountNumber       | Holdername | accountType | bankName | branchCode | ifscCode | balance | id   |
++---------------------+------------+-------------+----------+------------+----------+---------+------+
+| 1721048100316629191 | hjk        | CURRENT     | SBI      | 1025       | SBIN0125 |    5000 | 9999 |
++---------------------+------------+-------------+----------+------------+----------+---------+------+
+1 row in set (0.03 sec)
+
+mysql> select * from transations;
+ERROR 1146 (42S02): Table 'montran.transations' doesn't exist
+mysql> select * from transation;
+ERROR 1146 (42S02): Table 'montran.transation' doesn't exist
+mysql> select * from transaction;
++------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| id         | amount | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| 1003802630 |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:49:48 |
+| -782979371 |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:50:33 |
+|  987032382 |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:52:28 |
+| 1782875900 |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:56:29 |
+|  960469841 |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:57:03 |
+| 1035752883 |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:59:33 |
++------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+6 rows in set (0.03 sec)
+
+mysql> alter table transaction change id TransactionID varchar(30);
+Query OK, 6 rows affected (2.79 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from transaction;
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| TransactionID | amount | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| 1003802630    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:49:48 |
+| -782979371    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:50:33 |
+| 987032382     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:52:28 |
+| 1782875900    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:56:29 |
+| 960469841     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:57:03 |
+| 1035752883    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:59:33 |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from transaction;
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| TransactionID | amount | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| 1003802630    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:49:48 |
+| -782979371    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:50:33 |
+| 987032382     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:52:28 |
+| 1782875900    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:56:29 |
+| 960469841     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:57:03 |
+| 1035752883    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:59:33 |
+| -1820183868   |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:22:59 |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+7 rows in set (0.04 sec)
+
+mysql> select * from transaction;
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| TransactionID | amount | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| 1003802630    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:49:48 |
+| -782979371    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:50:33 |
+| 987032382     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:52:28 |
+| 1782875900    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:56:29 |
+| 960469841     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:57:03 |
+| 1035752883    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:59:33 |
+| -1820183868   |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:22:59 |
+| 1405644391    |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:28 |
+| 541228270     |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:30 |
+| 888124527     |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:33 |
+| 985962810     |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:37 |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+11 rows in set (0.06 sec)
+
+mysql> select * from transaction;
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| TransactionID | amount | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| 1003802630    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:49:48 |
+| -782979371    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:50:33 |
+| 987032382     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 12:52:28 |
+| 1782875900    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:56:29 |
+| 960469841     |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:57:03 |
+| 1035752883    |      1 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 12:59:33 |
+| -1820183868   |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:22:59 |
+| 1405644391    |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:28 |
+| 541228270     |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:30 |
+| 888124527     |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:33 |
+| 985962810     |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:29:37 |
+| 1731754742    |     11 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:32:23 |
+| 256992142     |      0 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:32:45 |
+| NULL          |      0 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:37:39 |
+| w2090460904   |      0 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:39:22 |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+15 rows in set (0.00 sec)
+
+mysql> truncate table transactions;
+ERROR 1146 (42S02): Table 'montran.transactions' doesn't exist
+mysql> truncate table transaction;
+Query OK, 0 rows affected (1.25 sec)
+
+mysql> select * from transaction;
+Empty set (0.09 sec)
+
+mysql> select * from transaction;
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| TransactionID | amount | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| w1795111027   |      0 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:40:43 |
++---------------+--------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from transaction;
++---------------+---------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| TransactionID | amount  | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++---------------+---------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| w1795111027   |       0 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:40:43 |
+| d73988188     |   10340 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:41:19 |
+| w111669237    |    1221 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:41:20 |
+| d101752865    |     340 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:41:41 |
+| w1553730311   | -124321 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:41:41 |
++---------------+---------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+5 rows in set (0.06 sec)
+
+mysql> select * from accounts;
++---------------------+------------+-------------+----------+------------+----------+---------+------+
+| accountNumber       | Holdername | accountType | bankName | branchCode | ifscCode | balance | id   |
++---------------------+------------+-------------+----------+------------+----------+---------+------+
+| 1721048100316629191 | hjk        | CURRENT     | SBI      | 1025       | SBIN0125 |  138847 | 9999 |
++---------------------+------------+-------------+----------+------------+----------+---------+------+
+1 row in set (0.00 sec)
+
+mysql>

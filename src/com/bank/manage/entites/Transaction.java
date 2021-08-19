@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.bank.manage.Enums.TransactionType;
 
 public class Transaction {
+	
     private String id;
     private double amount;
     private String sentByAccNO;

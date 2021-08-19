@@ -25,7 +25,6 @@ public class AccountOperations implements AccountOps {
 	Connection con = DbConnector.createMyConnection();
 	CustomerOperations cops = new CustomerOperations();
 	TransactionOperations t = new TransactionOperations();
- //   AccountOperations aops = new AccountOperations();
     
 	/*
 	 * checks kYC Status with custID Does not allow creation of account if KYC is
@@ -83,7 +82,7 @@ public class AccountOperations implements AccountOps {
 				c.setAccount(ac);
 			
 				//updating Accounts table
-				//AccountOperations aops = new AccountOperations();
+
 		    	aops.updateAccountsTable(c);}
 			}
 		    
@@ -99,43 +98,8 @@ public class AccountOperations implements AccountOps {
 		 e.getMessage();
 		} 
 		
-	
-		
 	}
-	//		try {
-//			int id = Integer.parseInt(c.getId()) ;
-//			ResultSet resultset = cops.getUserById(c.getId());
-//			
-//			if (resultset != null) {
-//				int kycstatus = resultset.getInt(6);
-//				
-//		
-//		 		
-//	           
-//            PreparedStatement stmt =
-//            		con.prepareStatement("select * from accounts where id=?");
-//            stmt.setInt(1, id); 
-//           ResultSet i = stmt.executeQuery();
-//           System.out.println(i+" int is ");
-//           
-//				if (kycstatus != 0) {
-//				//	ResultSet resultset1 = cops.getA(c.getId());
-//				} 
-//				else {
-//					
-//					System.out.println("Please update KYC status ");
-//				}
-//				
-//			} 
-//			
-//			else {	System.out.println("User Not Found");
-//			
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
+
 
 	/*
 	 * Deposit Amount to customer Account and Display it
@@ -145,8 +109,7 @@ public class AccountOperations implements AccountOps {
 		try {
 			ResultSet i = cops.getUserById(c.getId());
 			int kycstatus = i.getInt(6);
-			System.out.println(kycstatus);
-			
+	
 			 if (kycstatus == 0)
 			{
 				System.out.println("Kyc Not Updated");
@@ -205,14 +168,14 @@ public class AccountOperations implements AccountOps {
 	 */
 	@Override
 	public void withdraw(Customer c, double amount) {
-		System.out.println("Coming inside withdraw");
+	//	System.out.println("Coming inside withdraw");
 		try {
 			PreparedStatement pstmt = con.prepareStatement("select * from customers where id = ?");
 			pstmt.setString(1, c.getId());
 			ResultSet i = pstmt.executeQuery();
 			if (i.next()) {
 				int kycstatus = i.getInt(6);
-				System.out.println(kycstatus);
+				//System.out.println(kycstatus);
 				if (kycstatus == 0) {
 					System.out.println("Kyc Not Updated");
 					throw new ProcessTerminationException("Process Terminated");
@@ -280,6 +243,7 @@ public class AccountOperations implements AccountOps {
 						try {
 							throw new NegativeBalanceException("Negative Balance");
 						} catch (Exception e) {
+							e.getMessage();
 							e.printStackTrace();
 						}
 					}
@@ -388,7 +352,6 @@ public class AccountOperations implements AccountOps {
 				System.err.println("User Not Found");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -435,7 +398,7 @@ public class AccountOperations implements AccountOps {
 
 			int recordaffected = pstmt.executeUpdate();
 
-			System.out.println(recordaffected);
+		//	System.out.println(recordaffected);
 			if (recordaffected > 0) {
 				System.out.println("Balance Updated");
 			} else {

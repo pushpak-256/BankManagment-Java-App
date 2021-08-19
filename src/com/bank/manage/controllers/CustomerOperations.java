@@ -114,7 +114,7 @@ PreparedStatement insertstatement = con.prepareStatement
 
 	// Delete Customer from database by ID
     public void deleteCustomer(Customer c) throws SQLException, ProcessTerminationException {
-        String query = " select * from accounts where customerId = ?";
+        String query = " select * from accounts where id = ?";
         con = DbConnector.createMyConnection();
         PreparedStatement pstmt = con.prepareStatement(query);
         pstmt.setString(1, c.getId());
@@ -134,11 +134,10 @@ PreparedStatement insertstatement = con.prepareStatement
                     System.out.println("Customer Deleted Succssfully");
                 }
             } catch (SQLException e) {
+            	System.err.println(e.getMessage()+" .. ");
                 e.printStackTrace();
             }
-            finally {
-                con.close();
-            }
+           
         }
 
     }
@@ -189,18 +188,6 @@ PreparedStatement insertstatement = con.prepareStatement
 
 	}
 
-// this method is not requeired anymore
-	
-//	public void updateCustomerTable(Customer c) throws SQLException {
-//		PreparedStatement insertstatement = con.prepareStatement("update customers set account = ? where id = ? ");
-//		insertstatement.setString(1, c.getAccount().toString());
-//		insertstatement.setString(2, c.getId());
-//
-//		int res = insertstatement.executeUpdate();
-//
-//		System.out.println(res + "Record Updated");
-//        con.close();
-//	}
 
 	
 	//removing a customer record with this.id form customers table

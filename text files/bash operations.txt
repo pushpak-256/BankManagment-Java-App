@@ -1,0 +1,433 @@
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (master)
+$ git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+nothing to commit, working tree clean
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (master)
+$ git remote add https://github.com/RahulVarmaa/BankManagement
+usage: git remote add [<options>] <name> <url>
+
+    -f, --fetch           fetch the remote branches
+    --tags                import all tags and associated objects when fetching
+                          or do not fetch any tag at all (--no-tags)
+    -t, --track <branch>  branch(es) to track
+    -m, --master <branch>
+                          master branch
+    --mirror[=(push|fetch)]
+                          set up remote as a mirror to push to or fetch from
+
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (master)
+$ git remote add origin https://github.com/RahulVarmaa/BankManagement
+error: remote origin already exists.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (master)
+$ git checkout loan
+Switched to a new branch 'loan'
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+nothing to commit, working tree clean
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+nothing to commit, working tree clean
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .classpath
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   bin/com/bank/manage/dboperations/DbConnector.class
+        modified:   bin/com/bank/manage/entites/Address.class
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+        modified:   src/com/bank/manage/dboperations/DbConnector.java
+        modified:   src/com/bank/manage/entites/Address.java
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        bin/.gitignore
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+warning: LF will be replaced by CRLF in bin/.gitignore.
+The file will have its original line endings in your working directory
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   .classpath
+        new file:   bin/.gitignore
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   bin/com/bank/manage/dboperations/DbConnector.class
+        modified:   bin/com/bank/manage/entites/Address.class
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+        modified:   src/com/bank/manage/dboperations/DbConnector.java
+        modified:   src/com/bank/manage/entites/Address.java
+
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m "some modifications in address.toString"
+[loan 0a7d5ba] some modifications in address.toString
+ 10 files changed, 41 insertions(+), 11 deletions(-)
+ create mode 100644 bin/.gitignore
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Enumerating objects: 44, done.
+Counting objects: 100% (44/44), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (18/18), done.
+Writing objects: 100% (26/26), 7.18 KiB | 350.00 KiB/s, done.
+Total 26 (delta 8), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (8/8), completed with 8 local objects.
+To https://github.com/RahulVarmaa/BankManagement
+   297d9f6..0a7d5ba  loan -> loan
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        sql_modification.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Everything up-to-date
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        new file:   sql_modification.txt
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m "adding sql modifications"
+[loan 1513bcc] adding sql modifications
+ 3 files changed, 11 insertions(+), 1 deletion(-)
+ create mode 100644 sql_modification.txt
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Enumerating objects: 26, done.
+Counting objects: 100% (26/26), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (15/15), 1.53 KiB | 312.00 KiB/s, done.
+Total 15 (delta 4), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To https://github.com/RahulVarmaa/BankManagement
+   0a7d5ba..1513bcc  loan -> loan
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m "modified registerCustomer() and added a removeCustomer() feature"
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m "modified registerCustomer() and added a removeCustomer() feature"
+[loan f3c12fd] modified registerCustomer() and added a removeCustomer() feature
+ 4 files changed, 38 insertions(+), 15 deletions(-)
+ rewrite bin/com/bank/manage/controllers/CustomerOperations.class (73%)
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Enumerating objects: 27, done.
+Counting objects: 100% (27/27), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (11/11), done.
+Writing objects: 100% (16/16), 6.00 KiB | 877.00 KiB/s, done.
+Total 16 (delta 4), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To https://github.com/RahulVarmaa/BankManagement
+   1513bcc..f3c12fd  loan -> loan
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+nothing to commit, working tree clean
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+nothing to commit, working tree clean
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+nothing to commit, working tree clean
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   sql_modification.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m ""
+Aborting commit due to empty commit message.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m " "
+Aborting commit due to empty commit message.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m "updating .sql"
+[loan dafa9b8] updating .sql
+ 1 file changed, 1 insertion(+)
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 304 bytes | 304.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/RahulVarmaa/BankManagement
+   f3c12fd..dafa9b8  loan -> loan
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   bin/com/bank/manage/dboperations/DbConnector.class
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+        modified:   src/com/bank/manage/dboperations/DbConnector.java
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m "some modifications in console output"
+[loan 95f69da] some modifications in console output
+ 6 files changed, 35 insertions(+), 22 deletions(-)
+ rewrite bin/com/bank/manage/controllers/CustomerOperations.class (92%)
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Enumerating objects: 34, done.
+Counting objects: 100% (34/34), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (20/20), 6.58 KiB | 1.10 MiB/s, done.
+Total 20 (delta 5), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To https://github.com/RahulVarmaa/BankManagement
+   dafa9b8..95f69da  loan -> loan
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   bin/com/bank/manage/controllers/AccountOperations.class
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   bin/com/bank/manage/entites/Customer.class
+        modified:   sql_modification.txt
+        modified:   src/com/bank/manage/controllers/AccountOperations.java
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+        modified:   src/com/bank/manage/entites/Customer.java
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Everything up-to-date
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   bin/com/bank/manage/controllers/AccountOperations.class
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   bin/com/bank/manage/entites/Customer.class
+        modified:   sql_modification.txt
+        modified:   src/com/bank/manage/controllers/AccountOperations.java
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+        modified:   src/com/bank/manage/entites/Customer.java
+
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git commit -m "fix minor error in accounts"
+[loan 7dd830e] fix minor error in accounts
+ 9 files changed, 99 insertions(+), 58 deletions(-)
+ rewrite bin/com/bank/manage/controllers/AccountOperations.class (85%)
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Enumerating objects: 38, done.
+Counting objects: 100% (38/38), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (18/18), done.
+Writing objects: 100% (23/23), 12.99 KiB | 1.62 MiB/s, done.
+Total 23 (delta 7), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (7/7), completed with 7 local objects.
+To https://github.com/RahulVarmaa/BankManagement
+   95f69da..7dd830e  loan -> loan
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git status
+On branch loan
+Your branch is up to date with 'origin/loan'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   Rahul_update this.txt
+        modified:   bin/com/bank/manage/controllers/AccountOperations.class
+        modified:   bin/com/bank/manage/controllers/BankOperations.class
+        modified:   bin/com/bank/manage/controllers/CustomerOperations.class
+        modified:   src/com/bank/manage/controllers/AccountOperations.java
+        modified:   src/com/bank/manage/controllers/BankOperations.java
+        modified:   src/com/bank/manage/controllers/CustomerOperations.java
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   bin/com/bank/manage/controllers/AccountOperations.class
+        modified:   src/com/bank/manage/controllers/AccountOperations.java
+
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git add .
+
+[loan 1af7c3c] modified accountOperation.javankManagement (loan)
+ 7 files changed, 35 insertions(+), 35 deletions(-)
+ create mode 100644 Rahul_update this.txt
+ rewrite bin/com/bank/manage/controllers/AccountOperations.class (88%)
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$ git push -u origin loan
+Enumerating objects: 30, done.
+Counting objects: 100% (30/30), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (19/19), 12.14 KiB | 428.00 KiB/s, done.
+Total 19 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To https://github.com/RahulVarmaa/BankManagement
+   7dd830e..1af7c3c  loan -> loan
+Branch 'loan' set up to track remote branch 'loan' from 'origin'.
+
+Pushpak@op MINGW64 /d/Dekstop/prjM/bankapp/BankManagement (loan)
+$

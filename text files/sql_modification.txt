@@ -1,0 +1,22 @@
+ALTER TABLE customers ADD CONSTRAINT PrimaryKey PRIMARY KEY (id);
+
+alter table accounts change customerId id int;
+
+ALTER TABLE accounts ADD FOREIGN KEY (id) REFERENCES customers(id);
+
+ALTER TABLE accounts CHANGE id id int NOT NULL;
+
+Alter table accounts add FOREIGN KEY(id) REFERENCES customers(id);
+
+ALTER TABLE accounts ADD CONSTRAINT accounts_unique UNIQUE (id);
+mysql> select * from transaction;
++---------------+---------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| TransactionID | amount  | sentByAccNo         | sentByName | receiverAccNo       | receiverName | transactionType | date                |
++---------------+---------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+| w1795111027   |       0 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:40:43 |
+| d73988188     |   10340 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:41:19 |
+| w111669237    |    1221 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:41:20 |
+| d101752865    |     340 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Deposit         | 19-08-2021 13:41:41 |
+| w1553730311   |  124321 | 1721048100316629191 | hjk        | 1721048100316629191 | hjk          | Withdrawn       | 19-08-2021 13:41:41 |
++---------------+---------+---------------------+------------+---------------------+--------------+-----------------+---------------------+
+5 rows in set (0.06 sec)

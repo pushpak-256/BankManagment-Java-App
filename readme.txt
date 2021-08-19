@@ -1,1 +1,2 @@
-this is loan fuctionality branch
+drop all tables and then copy BankDb.sql file
+to work database properly

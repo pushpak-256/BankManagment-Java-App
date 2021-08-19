@@ -18,8 +18,16 @@ import com.bank.manage.entites.Transaction;
 public class TransactionOperations {
 	public void registerTransaction(Account a, Customer c, double amount, TransactionType type) throws SQLException {
 		Transaction t = new Transaction();
-
-		t.setId(Integer.toString(ThreadLocalRandom.current().nextInt()));
+		
+        int transactionNumber=ThreadLocalRandom.current().nextInt();
+        if (transactionNumber<0) {transactionNumber*=-1;}
+        
+        char transactionType= type.toString().toLowerCase().charAt(0);
+        
+        String generatedTransactionID = 
+        		new StringBuilder().append(transactionType).append(transactionNumber).toString(); 
+        
+     	t.setId(generatedTransactionID);
 		t.setAmount(amount);
 		t.setSentByAccNO(a.getAccountNumber());
 		t.setSentByName(a.getHolderName());
@@ -54,7 +62,7 @@ public class TransactionOperations {
 
 	}
 
-	void getTransactionByLimit(String sentByAccNo) throws SQLException {
+	public void getTransactionByLimit(String sentByAccNo) throws SQLException {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter total no of transaction you want to be displayed: ");
 		int limit = sc.nextInt();
