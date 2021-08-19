@@ -1,0 +1,4 @@
+drop all tables from bank_system database and then run all queries from BankDb.sql.
+
+                            IMP
+_______cross-check database name in code and your local database________
